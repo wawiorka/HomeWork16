@@ -9,6 +9,7 @@
 
 import db
 
+
 def print_menu():
     print("\nЧто вы хотите сделать? (выберите нужную команду) ")
     print("0. Выход")
@@ -34,7 +35,6 @@ def app():
     print("Таблицы созданы")
     
     # отлов ошибки на дозаписывание новых строк при повторном запуске, получше варианта не придумала
-    # я осознаю, что 
     try:
         db.content_db()
     except Exception as e:
@@ -45,6 +45,7 @@ def app():
         cmd = int(input("Введите номер команды: "))
 
         if cmd == 0:
+            print("\nСпасибо за пользование сервисом! До свидания!")
             break
         
         elif cmd == 1:  # Показать список мероприятий
@@ -173,7 +174,6 @@ def app():
             print(f"Найдено меcт по запросу '{query}':")
             for plase in plases:
                 print(f"ID {plase[0]} - {plase[1]}.")
-
         
         # • Функционал для бронирования и отмены билетов"""
         elif cmd == 9:  # бронирование билетов
@@ -199,7 +199,11 @@ def app():
             print("\nВывод информации о числе забронированных билетов на мероприятие")
             id = input("Введите ID мероприятия: ")
             try:
-                num_tickets = db.get_num_tickets(id)
+                event_tickets = db.get_num_tickets(id)
+                num_tickets = event_tickets["num_tickets"]
+                event = event_tickets["event"]   
+                for ev in event:
+                    print(f"На мероприятие: '{ev[0]}':")                   
                 for ticket in num_tickets:
                     print(f"Забронировано билетов: {ticket[0]}")
             except Exception as e:
@@ -219,6 +223,5 @@ def app():
         else:
             print("Вы ввели несуществующею команду. Попробуйте еще раз!")
         
-
 
 app()

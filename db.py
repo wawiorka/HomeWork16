@@ -181,8 +181,14 @@ def get_num_tickets(id):
     with connect_db() as conn, conn.cursor() as cur:
         cur.execute("SELECT COUNT(id) FROM tickets WHERE event_id = %s", (id,))
         num_tickets = cur.fetchall()
-        return num_tickets
-    
+        
+        cur.execute("SELECT title FROM events WHERE id = %s", (id,))
+        event = cur.fetchall()
+
+        return {
+            "num_tickets": num_tickets,
+            "event": event
+        }
 
 def get_tickets():
     with connect_db() as conn, conn.cursor() as cur:
